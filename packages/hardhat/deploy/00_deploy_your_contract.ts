@@ -22,10 +22,15 @@ const deployYourContract: DeployFunction = async function (hre: HardhatRuntimeEn
   const { deployer } = await hre.getNamedAccounts();
   const { deploy } = hre.deployments;
 
-  await deploy("YourContract", {
+  console.log("deployer:", deployer);
+
+  const kudzoAddress = `0x94E84f2DBB9b068eA01DB531E7343ec2385B7052`;
+  const zakAddress = `0x707A1B0762608bF4cb4f687c94cCFcF0AdFfe754`;
+
+  await deploy("Infector", {
     from: deployer,
     // Contract constructor arguments
-    args: [deployer],
+    args: [kudzoAddress, zakAddress],
     log: true,
     // autoMine: can be passed to the deploy function to make the deployment process faster on local networks by
     // automatically mining the contract deployment transaction. There is no effect on live networks.
@@ -33,12 +38,12 @@ const deployYourContract: DeployFunction = async function (hre: HardhatRuntimeEn
   });
 
   // Get the deployed contract to interact with it after deploying.
-  const yourContract = await hre.ethers.getContract<Contract>("YourContract", deployer);
-  console.log("👋 Initial greeting:", await yourContract.greeting());
+  const yourContract = await hre.ethers.getContract<Contract>("Infector", deployer);
+  console.log(yourContract);
 };
 
 export default deployYourContract;
 
 // Tags are useful if you have multiple deploy files and only want to run one of them.
 // e.g. yarn deploy --tags YourContract
-deployYourContract.tags = ["YourContract"];
+deployYourContract.tags = ["Infector"];
